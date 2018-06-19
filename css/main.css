@@ -2,3 +2,40 @@ h1{
 	font-size: 38px;
 	color: green;
 }
+
+form{
+	display: flex;
+	flex-direction: column;
+	/*background-color: gray;*/
+	align-items: center;
+	padding: 50px;
+}
+
+input, textarea{
+	outline: none;
+	padding: 10px;
+	margin: 20px;
+	font-size: 20px;
+	border: 2px solid;
+    border-radius: 5px;
+}
+
+button{
+	outline: none;
+	margin: 20px;
+	/*width: 200px;*/
+	padding: 10px;
+	font-size: 20px;
+    border-radius: 5px;
+	background-color: #fff;
+}
+
+.success{
+	font-size: 20px;
+	color: green;
+}
+
+.error{
+	font-size: 20px;
+	color: green;
+}
