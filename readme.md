@@ -44,3 +44,26 @@ $result->fetchALL(PDO::FETCH_ASSOC);
 
 
 ```
+# Выборка с защитой от SQL иньекций - РУЧНОЙ режим
+```php
+$username = 'user';
+$password = '123';
+
+$username = $db->quote($username);
+$username = strtr($username, array('_'=>'_','%'=>'\%'));
+
+$password = $db->quote($password);
+$password = strtr($password, array('_'=>'_','%'=>'\%'));
+
+$sql = "SELECT * FROM users WHERE name = '{$username}' AND password = '{$password}' LIMIT 1";
+
+$result = $db->query($sql);
+
+echo "<h2>Выборка записи без защиты от SQL инъекции: </h2>";
+
+if($result->rowCount()==1){
+	$user = $result->fetch(PDO::FETCH_ASSOC);
+	echo "Имя пользователя: {$user['name']} <br>";
+	echo "Пароль пользователя: {$user['password']}";
+}
+```

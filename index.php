@@ -9,8 +9,8 @@
 <?php
 
 $db = new PDO('mysql:host=localhost;dbname=filmoteka', 'root', '');
-$sql = "SELECT * FROM films";
-$result = $db->query($sql);
+// $sql = "SELECT * FROM films";
+// $result = $db->query($sql);
 
 // echo "<h2>Вывод записей по одной </h2>";
 
@@ -31,24 +31,65 @@ $result = $db->query($sql);
 // 	echo "<h2> Жанр: " . $film['genre'] . "</h2>";
 // }
 
-echo "<pre>";
+// echo "<pre>";
 
-$result->bindColumn('id', $id);
-$result->bindColumn('title', $title);
-$result->bindColumn('genre', $genre);
-$result->bindColumn('year', $year);
+// $result->bindColumn('id', $id);
+// $result->bindColumn('title', $title);
+// $result->bindColumn('genre', $genre);
+// $result->bindColumn('year', $year);
+
+// while ($result->fetch(PDO::FETCH_ASSOC)) {
+// 	echo "ID: {$id} <br>";
+// 	echo "Название: {$title} <br>";
+// 	echo "Жанр: {$genre} <br>";
+// 	echo "Год: {$year} <br>";
+// 	echo "<br><br>";
+// }
+
+// echo "</pre>";
 
 
+//1. Выборка без защиты от SQL инъекции
 
-while ($result->fetch(PDO::FETCH_ASSOC)) {
-	echo "ID: {$id} <br>";
-	echo "Название: {$title} <br>";
-	echo "Жанр: {$genre} <br>";
-	echo "Год: {$year} <br>";
-	echo "<br><br>";
+// $username = 'user';
+// $password = '123';
+
+// $sql = "SELECT * FROM users WHERE name = '{$username}' AND password = '{$password}' LIMIT 1";
+
+// $result = $db->query($sql);
+
+// echo "<h2>Выборка записи без защиты от SQL инъекции: </h2>";
+// // print_r($result->fetch(PDO::FETCH_ASSOC));
+
+// if($result->rowCount()==1){
+// 	$user = $result->fetch(PDO::FETCH_ASSOC);
+// 	echo "Имя пользователя: {$user['name']} <br>";
+// 	echo "Пароль пользователя: {$user['password']}";
+// }
+
+//2. Выборка с защитой от SQL иньекций - РУЧНОЙ режим
+
+$username = 'user';
+$password = '123';
+
+$username = $db->quote($username);
+$username = strtr($username, array('_'=>'_','%'=>'\%'));
+
+$password = $db->quote($password);
+$password = strtr($password, array('_'=>'_','%'=>'\%'));
+
+$sql = "SELECT * FROM users WHERE name = '{$username}' AND password = '{$password}' LIMIT 1";
+
+$result = $db->query($sql);
+
+echo "<h2>Выборка записи без защиты от SQL инъекции: </h2>";
+
+if($result->rowCount()==1){
+	$user = $result->fetch(PDO::FETCH_ASSOC);
+	echo "Имя пользователя: {$user['name']} <br>";
+	echo "Пароль пользователя: {$user['password']}";
 }
 
-echo "</pre>";
 
 
 ?>
