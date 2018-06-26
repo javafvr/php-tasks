@@ -112,15 +112,26 @@ echo "Имя пользователя: {$user} <br>";
 echo "Пароль пользователя: {$pass}";
 ```
 
-# Защита от сross site scripting attack
+# Вставка данных
 ```php
-htmlentities(Строка);
-```
-# Защита от сross site scripting attack
-```php
-htmlentities(Строка);
-```
+$sql = "INSERT INTO users (name, password) VALUES (:name, :password)";
+$stmt = $db->prepare($sql);
 
+$username = "Flash999";
+$userpassword = "999";
+
+$stmt->bindValue(':name', $username);
+$stmt->bindValue(':password', $userpassword);
+$stmt->execute();
+```
+# Возвращает количество записей затронутых операцией с БД
+```php
+$stmt->rowCount();
+```
+# Возвращает ID последней вставленной записи
+```php
+$db->lastInsertID();
+```
 
 # Защита от сross site scripting attack
 ```php

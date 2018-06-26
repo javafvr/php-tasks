@@ -113,28 +113,43 @@ $db = new PDO('mysql:host=localhost;dbname=filmoteka', 'root', '');
 
 
 //4. Выборка с защитой от SQL иньекций - АВТОМАТИЧЕСКИЙ режим через параметры
-$sql = "SELECT * FROM users WHERE name = ? AND password = ? LIMIT 1";
-$stmt = $db->prepare($sql);
-$username = 'user';
-$password = '123';
+// $sql = "SELECT * FROM users WHERE name = ? AND password = ? LIMIT 1";
+// $stmt = $db->prepare($sql);
+// $username = 'user';
+// $password = '123';
 
-$stmt->bindValue('1', $username);
-$stmt->bindValue('2', $password);
-$stmt->execute();
+// $stmt->bindValue('1', $username);
+// $stmt->bindValue('2', $password);
+// $stmt->execute();
 
-// Сокращенная запись через массив
-// $stmt->execute(array($username, $password));
+// // Сокращенная запись через массив
+// // $stmt->execute(array($username, $password));
 
-$stmt->bindColumn('name', $user);
-$stmt->bindColumn('password', $pass);
+// $stmt->bindColumn('name', $user);
+// $stmt->bindColumn('password', $pass);
 
-$stmt->fetch();
+// $stmt->fetch();
 
-echo "Имя пользователя: {$user} <br>";
-echo "Пароль пользователя: {$pass}";
+// echo "Имя пользователя: {$user} <br>";
+// echo "Пароль пользователя: {$pass}";
 
 //Защита от сross site scripting attack
 //htmlentities($username);
+
+//5. Вставка данных
+
+$sql = "INSERT INTO users (name, password) VALUES (:name, :password)";
+$stmt = $db->prepare($sql);
+
+$username = "Flash999";
+$userpassword = "999";
+
+$stmt->bindValue(':name', $username);
+$stmt->bindValue(':password', $userpassword);
+$stmt->execute();
+
+echo "<p>Вставлено строк: " . $stmt->rowCount() . "</p>";
+echo "<p>ID последней вставленной записи: " . $db->lastInsertID() . "</p>";
 
 
 ?>
