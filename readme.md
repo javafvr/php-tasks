@@ -67,3 +67,62 @@ if($result->rowCount()==1){
 	echo "Пароль пользователя: {$user['password']}";
 }
 ```
+# 3. Выборка с защитой от SQL иньекций - АВТОМАТИЧЕСКИЙ режим
+```php
+$sql = "SELECT * FROM users WHERE name = :username AND password = :password LIMIT 1";
+
+$stmt = $db->prepare($sql);
+
+$username = 'user';
+$password = '123';
+
+$stmt->bindValue(':username', $username);
+$stmt->bindValue(':password', $password);
+$stmt->execute();
+
+// Сокращенная запись через массив
+$stmt->execute(array(':username'=>$username, ':password' => $password));
+
+$stmt->bindColumn('name', $user);
+$stmt->bindColumn('password', $pass);
+
+echo "Имя пользователя: {$user} <br>";
+echo "Пароль пользователя: {$pass}";
+```
+# 4. Выборка с защитой от SQL иньекций - АВТОМАТИЧЕСКИЙ режим через параметры
+```php
+$sql = "SELECT * FROM users WHERE name = ? AND password = ? LIMIT 1";
+$stmt = $db->prepare($sql);
+$username = 'user';
+$password = '123';
+
+$stmt->bindValue('1', $username);
+$stmt->bindValue('2', $password);
+$stmt->execute();
+
+// Сокращенная запись через массив
+// $stmt->execute(array($username, $password));
+
+$stmt->bindColumn('name', $user);
+$stmt->bindColumn('password', $pass);
+
+$stmt->fetch();
+
+echo "Имя пользователя: {$user} <br>";
+echo "Пароль пользователя: {$pass}";
+```
+
+# Защита от сross site scripting attack
+```php
+htmlentities(Строка);
+```
+# Защита от сross site scripting attack
+```php
+htmlentities(Строка);
+```
+
+
+# Защита от сross site scripting attack
+```php
+htmlentities(Строка);
+```

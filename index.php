@@ -69,27 +69,72 @@ $db = new PDO('mysql:host=localhost;dbname=filmoteka', 'root', '');
 
 //2. Выборка с защитой от SQL иньекций - РУЧНОЙ режим
 
+// $username = 'user';
+// $password = '123';
+
+// $username = $db->quote($username);
+// $username = strtr($username, array('_'=>'_','%'=>'\%'));
+
+// $password = $db->quote($password);
+// $password = strtr($password, array('_'=>'_','%'=>'\%'));
+
+// $sql = "SELECT * FROM users WHERE name = '{$username}' AND password = '{$password}' LIMIT 1";
+
+// $result = $db->query($sql);
+
+// echo "<h2>Выборка записи без защиты от SQL инъекции: </h2>";
+
+// if($result->rowCount()==1){
+// 	$user = $result->fetch(PDO::FETCH_ASSOC);
+// 	echo "Имя пользователя: {$user['name']} <br>";
+// 	echo "Пароль пользователя: {$user['password']}";
+// }
+
+// //3. Выборка с защитой от SQL иньекций - АВТОМАТИЧЕСКИЙ режим
+// $sql = "SELECT * FROM users WHERE name = :username AND password = :password LIMIT 1";
+
+// $stmt = $db->prepare($sql);
+
+// $username = 'user';
+// $password = '123';
+
+// $stmt->bindValue(':username', $username);
+// $stmt->bindValue(':password', $password);
+// $stmt->execute();
+
+// // Сокращенная запись через массив
+// // $stmt->execute(array(':username'=>$username, ':password' => $password));
+
+// $stmt->bindColumn('name', $user);
+// $stmt->bindColumn('password', $pass);
+
+// echo "Имя пользователя: {$user} <br>";
+// echo "Пароль пользователя: {$pass}";
+
+
+//4. Выборка с защитой от SQL иньекций - АВТОМАТИЧЕСКИЙ режим через параметры
+$sql = "SELECT * FROM users WHERE name = ? AND password = ? LIMIT 1";
+$stmt = $db->prepare($sql);
 $username = 'user';
 $password = '123';
 
-$username = $db->quote($username);
-$username = strtr($username, array('_'=>'_','%'=>'\%'));
+$stmt->bindValue('1', $username);
+$stmt->bindValue('2', $password);
+$stmt->execute();
 
-$password = $db->quote($password);
-$password = strtr($password, array('_'=>'_','%'=>'\%'));
+// Сокращенная запись через массив
+// $stmt->execute(array($username, $password));
 
-$sql = "SELECT * FROM users WHERE name = '{$username}' AND password = '{$password}' LIMIT 1";
+$stmt->bindColumn('name', $user);
+$stmt->bindColumn('password', $pass);
 
-$result = $db->query($sql);
+$stmt->fetch();
 
-echo "<h2>Выборка записи без защиты от SQL инъекции: </h2>";
+echo "Имя пользователя: {$user} <br>";
+echo "Пароль пользователя: {$pass}";
 
-if($result->rowCount()==1){
-	$user = $result->fetch(PDO::FETCH_ASSOC);
-	echo "Имя пользователя: {$user['name']} <br>";
-	echo "Пароль пользователя: {$user['password']}";
-}
-
+//Защита от сross site scripting attack
+//htmlentities($username);
 
 
 ?>
