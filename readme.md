@@ -112,7 +112,7 @@ echo "Имя пользователя: {$user} <br>";
 echo "Пароль пользователя: {$pass}";
 ```
 
-# Вставка данных
+# Вставка данных в БД
 ```php
 $sql = "INSERT INTO users (name, password) VALUES (:name, :password)";
 $stmt = $db->prepare($sql);
@@ -123,6 +123,34 @@ $userpassword = "999";
 $stmt->bindValue(':name', $username);
 $stmt->bindValue(':password', $userpassword);
 $stmt->execute();
+```
+# Обновление данных в БД
+```php
+$sql = "UPDATE users SET name = :name WHERE id = :id";
+
+$stmt = $db->prepare($sql);
+
+$username = "NewFlash";
+$id = '4';
+
+$stmt->bindValue(':name', $username);
+$stmt->bindValue(':id', $id);
+$stmt->execute();
+
+echo "<p>Было изменено строк: " . $stmt->rowCount();
+```
+# Удаление данных из БД
+```php
+$sql = "DELETE FROM users WHERE name = :name";
+
+$stmt = $db->prepare($sql);
+
+$username = "NewFlash";
+
+$stmt->bindValue(':name', $username);
+$stmt->execute();
+
+echo "<p>Было изменено строк: " . $stmt->rowCount();
 ```
 # Возвращает количество записей затронутых операцией с БД
 ```php

@@ -136,20 +136,47 @@ $db = new PDO('mysql:host=localhost;dbname=filmoteka', 'root', '');
 //Защита от сross site scripting attack
 //htmlentities($username);
 
-//5. Вставка данных
+// //5. Вставка данных
 
-$sql = "INSERT INTO users (name, password) VALUES (:name, :password)";
+// $sql = "INSERT INTO users (name, password) VALUES (:name, :password)";
+// $stmt = $db->prepare($sql);
+
+// $username = "Flash999";
+// $userpassword = "999";
+
+// $stmt->bindValue(':name', $username);
+// $stmt->bindValue(':password', $userpassword);
+// $stmt->execute();
+
+// echo "<p>Вставлено строк: " . $stmt->rowCount() . "</p>";
+// echo "<p>ID последней вставленной записи: " . $db->lastInsertID() . "</p>";
+
+
+//6. Обновление данных
+// $sql = "UPDATE users SET name = :name WHERE id = :id";
+
+// $stmt = $db->prepare($sql);
+
+// $username = "NewFlash";
+// $id = '4';
+
+// $stmt->bindValue(':name', $username);
+// $stmt->bindValue(':id', $id);
+// $stmt->execute();
+
+// echo "<p>Было изменено строк: " . $stmt->rowCount();
+
+//7. Удаление данных
+$sql = "DELETE FROM users WHERE name = :name";
+
 $stmt = $db->prepare($sql);
 
-$username = "Flash999";
-$userpassword = "999";
+$username = "NewFlash";
 
 $stmt->bindValue(':name', $username);
-$stmt->bindValue(':password', $userpassword);
 $stmt->execute();
 
-echo "<p>Вставлено строк: " . $stmt->rowCount() . "</p>";
-echo "<p>ID последней вставленной записи: " . $db->lastInsertID() . "</p>";
+echo "<p>Было изменено строк: " . $stmt->rowCount();
 
 
 ?>
