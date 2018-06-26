@@ -6,16 +6,51 @@
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-	<ol>
-		<?php
-			$books = array("451° по Фаренгейту", "Шантарам", "1984", "Мастер и Маргарита", "Три товарища", "Портрет Дориана Грея", "Вино из одуванчиков", "Цветы для Элджернона", "Над пропастью во ржи", "Маленький принц", "Анна Каренина", "Сто лет одиночества", "Тень горы", "Атлант расправил плечи");
-			
-			$sizeOfArray = count($books);
+<?php
 
-			for ($i=0; $i < $sizeOfArray; $i++) { 
-				echo "<li>$books[$i]";
-			}
-		?>
-	</ol>
+$db = new PDO('mysql:host=localhost;dbname=filmoteka', 'root', '');
+$sql = "SELECT * FROM films";
+$result = $db->query($sql);
+
+// echo "<h2>Вывод записей по одной </h2>";
+
+// while($film = $result->fetch(PDO::FETCH_ASSOC)){
+// 	echo "<h2> Фильм " . $film['title'] . "</h2>";
+// 	echo "<pre>";
+// 	print_r($film);
+// 	echo "</pre>";
+// }
+
+// $films = $result->fetchALL(PDO::FETCH_ASSOC);
+// echo "<pre>";
+// print_r($result->fetchALL(PDO::FETCH_ASSOC));
+// echo "</pre>";
+
+// foreach ($films as $film) {
+// 	echo "<h2> Фильм: " . $film['title'] . "</h2>";
+// 	echo "<h2> Жанр: " . $film['genre'] . "</h2>";
+// }
+
+echo "<pre>";
+
+$result->bindColumn('id', $id);
+$result->bindColumn('title', $title);
+$result->bindColumn('genre', $genre);
+$result->bindColumn('year', $year);
+
+
+
+while ($result->fetch(PDO::FETCH_ASSOC)) {
+	echo "ID: {$id} <br>";
+	echo "Название: {$title} <br>";
+	echo "Жанр: {$genre} <br>";
+	echo "Год: {$year} <br>";
+	echo "<br><br>";
+}
+
+echo "</pre>";
+
+
+?>
 </body>
 </html>
